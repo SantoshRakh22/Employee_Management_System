@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="base::layout(~{::section})">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Insert title here</title>
+
+</head>
+<body>
+<section>
+    <div class="container p-3">
+        <div class="row">
+
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header text-center fs-4">Employee Detail</div>
+                    <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert">
+                        <div class="text-center" th:text="${session.message.content}"></div>
+                        <th:block th:text="${@sessionHelper.removeMessageFromSession()}"></th:block>
+                    </div>
+                    <div class="card-body">
+                        <form  th:action="@{/updateUser}" method="post" novalidate="novalidate" th:object="${emp}" enctype="multipart/form-data">
+
+                            <div class="mb-3">
+                                <input type="hidden" th:value="${emp.tempId}" name="tempId" id="tempId"/>
+                            </div>
+
+                            <div class="mb-3">
+                                <label  class="form-label">First Name :</label>
+                                <input type="text" class="form-control" th:value="${emp.firstName}" name="firstName" th:classappend="${#fields.hasErrors('firstName')?'is-invalid':''}">
+                                <div class="invalid-feedback" th:each="e : ${#fields.errors('firstName')}" th:text="${e}"> </div>
+                            </div>
+                            <div class="mb-3">
+                                <label  class="form-label">Last Name :</label>
+                                <input type="text" class="form-control" name="lastName" th:value="${emp.lastName}" th:classappend="${#fields.hasErrors('lastName')?'is-invalid':''}" >
+                                <div class="invalid-feedback" th:each="e : ${#fields.errors('lastName')}" th:text="${e}"> </div>
+                            </div>
+                            <div class="mb-3">
+                                <label  class="form-label">Salary :</label>
+                                <input type="number" class="form-control"  name="salary" th:value="${emp.salary}" th:classappend="${#fields.hasErrors('salary')?'is-invalid':''}" >
+                                <div class="invalid-feedback" th:each="e : ${#fields.errors('salary')}" th:text="${e}"> </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label" for="qualification">Select Qualification</label>
+                                <select id="qualification" th:field="*{qualification}" name="qualification" class="form-select" aria-label="Default select example" required>
+                                    <option selected disabled value="">Choose...</option>
+                                    <option th:each="value : ${dynamicValues}" th:value="${value.id}" th:text="${value.qualification}" th:selected="${value.qualification == emp.qualification}"></option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label  class="form-label">Joining Date :</label>
+                                <input type="Date" class="form-control" name="joiningDate" th:value="${emp.joiningDate}" th:classappend="${#fields.hasErrors('joiningDate')?'is-invalid':''}" >
+                                <div class="invalid-feedback" th:each="e : ${#fields.errors('joiningDate')}" th:text="${e}"> </div>
+                            </div>
+                            <div class="mb-3">
+                                <label  class="form-label">Birth Date :</label>
+                                <input type="Date" class="form-control" name="birthDate" th:value="${emp.birthDate}" th:classappend="${#fields.hasErrors('birthDate')?'is-invalid':''}" >
+                                <div class="invalid-feedback" th:each="e : ${#fields.errors('birthDate')}" th:text="${e}"> </div>
+                            </div>
+
+                            <div style="display: flex">
+                                <label  class="form-label">Gender :</label>
+                                <div class="form-check" style="margin-left: 13px; margin-right: 13px;">
+                                    <input class="form-check-input" type="radio" name="gender" id="male" value="Male" th:checked="${emp.gender == 'Male'}">
+                                    <label class="form-check-label" for="male">Male</label>
+                                </div>
+                                <div class="form-check" style="margin-left: 13px; margin-right: 13px;">
+                                    <input class="form-check-input" type="radio" name="gender" id="female" value="Female" th:checked="${emp.gender == 'Female'}">
+                                    <label class="form-check-label" for="female">Female</label>
+                                </div>
+                            </div>
+
+                            <div style="display: flex">
+                                <label  class="form-label">Is Fresher Employee :</label>
+                                <div class="form-check" style="margin-left: 13px; margin-right: 13px;">
+                                    <input class="form-check-input" type="radio" name="isFresherEmployee" id="yes" value="Yes" th:checked="${emp.isFresherEmployee == 'Yes'}">
+                                    <label class="form-check-label" for="yes">Yes</label>
+                                </div>
+                                <div class="form-check" style="margin-left: 13px; margin-right: 13px;">
+                                    <input class="form-check-input" type="radio" name="isFresherEmployee" id="no" value="No" th:checked="${emp.isFresherEmployee == 'No'}">
+                                    <label class="form-check-label" for="no">No</label>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-around">
+                                <button class="btn btn-primary col-md-5">Update</button>
+                                <button type="reset" class="btn btn-secondary col-md-5">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
